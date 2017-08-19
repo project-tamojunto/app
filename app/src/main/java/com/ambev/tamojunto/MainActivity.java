@@ -1,4 +1,4 @@
-package com.bluehack.tamojunto;
+package com.ambev.tamojunto;
 
 import android.Manifest;
 import android.graphics.Bitmap;
@@ -17,9 +17,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.ambev.tamojunto.R;
-import com.bluehack.tamojunto.helper.GPSTracker;
-import com.bluehack.tamojunto.model.Service;
-import com.bluehack.tamojunto.utils.AddActivityPermissionsDispatcher;
+import com.ambev.tamojunto.helper.GPSTracker;
+import com.ambev.tamojunto.model.Service;
+import com.ambev.tamojunto.utils.AddActivityPermissionsDispatcher;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -41,10 +41,8 @@ public class MainActivity extends AppCompatActivity
     private double latitude = 0f, longitude = 0f;
     private String android_id;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         AddActivityPermissionsDispatcher.getLatLngWithCheck(MainActivity.this);
 
         super.onCreate(savedInstanceState);
@@ -133,12 +131,11 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        LatLng sydney = new LatLng(-34, 151);
+        LatLng sydney = new LatLng(latitude, longitude);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
@@ -169,7 +166,7 @@ public class MainActivity extends AppCompatActivity
 
     @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
     public void getLatLng(){
-        gps = new GPSTracker(AddBeeActivity.this);
+        gps = new GPSTracker(MainActivity.this);
         latitude = gps.getLatitude();
         longitude = gps.getLongitude();
     }

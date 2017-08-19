@@ -1,4 +1,4 @@
-package com.bluehack.tamojunto.helper;
+package com.ambev.tamojunto.helper;
 
 import android.Manifest;
 import android.app.Activity;

@@ -1,4 +1,4 @@
-package com.bluehack.tamojunto.model;
+package com.ambev.tamojunto.model;
 
 /**
  * Created by matheuscatossi on 19/08/17.
