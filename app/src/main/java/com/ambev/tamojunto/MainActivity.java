@@ -1,11 +1,13 @@
 package com.ambev.tamojunto;
 
 import android.Manifest;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.ambev.tamojunto.R;
 import com.ambev.tamojunto.helper.GPSTracker;
@@ -25,6 +28,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.OnMapReadyCallback;
 
@@ -135,17 +139,18 @@ public class MainActivity extends AppCompatActivity
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        AddActivityPermissionsDispatcher.getLatLngWithCheck(MainActivity.this);
+
         LatLng sydney = new LatLng(latitude, longitude);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
         ArrayList<Service> services = new ArrayList<Service>();
 
-        services.add(new Service("","","","","-23.566755","-46.401039",1));
-        services.add(new Service("","","","","-22.853341","-47.214708",1));
-        services.add(new Service("","","","","-22.853087","-47.204776",1));
-        services.add(new Service("","","","","-22.860561","-47.203445",1));
-
+        services.add(new Service("1","","","","-23.566755","-46.401039",1));
+        services.add(new Service("2","","","","-22.853341","-47.214708",1));
+        services.add(new Service("3","","","","-22.853087","-47.204776",1));
+        services.add(new Service("4","","","","-22.860561","-47.203445",1));
 
         for (Service service : services) {
             LatLng latLng = new LatLng(Double.parseDouble(service.getLat()), Double.parseDouble(service.getLng()));
@@ -155,6 +160,21 @@ public class MainActivity extends AppCompatActivity
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,13));
             googleMap.animateCamera(CameraUpdateFactory.zoomIn());
             googleMap.animateCamera(CameraUpdateFactory.zoomTo(13), 2000, null);
+
+            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener()
+            {
+
+                @Override
+                public boolean onMarkerClick(Marker arg0) {
+                    Intent intent = new Intent(MainActivity.this, InfoServiceActivity.class);
+                    intent.putExtra("id", "" + arg0.getTitle());
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+
+                    return true;
+                }
+
+            });
         }
     }
 
