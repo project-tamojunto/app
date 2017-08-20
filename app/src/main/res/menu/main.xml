@@ -2,8 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/rapel"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="Rapel"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/surfar"
+        android:orderInCategory="100"
+        android:title="Surfar"
         app:showAsAction="never" />
 </menu>

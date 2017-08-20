@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,17 +30,17 @@ public class InfoServiceActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info_service);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         Intent myIntent = getIntent();
         id = myIntent.getStringExtra("id");
 
-//        Toast.makeText(InfoServiceActivity.this, "" + id, Toast.LENGTH_SHORT).show();
-
-        nome = findViewById(R.id.nome);
-        preco = findViewById(R.id.preco);
-        descricao = findViewById(R.id.descricao);
-        servicos_adicionais = findViewById(R.id.servicos_adicionais);
-        categoria = findViewById(R.id.categoria);
+        nome = (TextView) findViewById(R.id.nome);
+        preco = (TextView) findViewById(R.id.preco);
+        descricao = (TextView) findViewById(R.id.descricao);
+        servicos_adicionais = (TextView) findViewById(R.id.servicos_adicionais);
+        categoria = (TextView) findViewById(R.id.categoria);
 
         nome.setText("Rapel Legalzao");
         preco.setText("R$1.000,00");
@@ -52,16 +53,30 @@ public class InfoServiceActivity extends AppCompatActivity {
         recyclerViewData.setLayoutManager(mLayoutManager);
 
         List<Data> l = new ArrayList<Data>();
-        l.add(new Data("22/04/17", "18:00", "22:00", 5));
-        l.add(new Data("22/04/17", "18:00", "22:00", 5));
-        l.add(new Data("22/04/17", "18:00", "22:00", 5));
-        l.add(new Data("22/04/17", "18:00", "22:00", 5));
-        l.add(new Data("22/04/17", "18:00", "22:00", 5));
+        l.add(new Data(1,"22/04/17", "18:00", "22:00", 5));
+        l.add(new Data(2,"22/04/17", "18:00", "22:00", 5));
+        l.add(new Data(3,"22/04/17", "18:00", "22:00", 5));
+        l.add(new Data(4,"22/04/17", "18:00", "22:00", 5));
+        l.add(new Data(5,"22/04/17", "18:00", "22:00", 5));
+        l.add(new Data(5,"22/04/17", "18:00", "22:00", 5));
+        l.add(new Data(5,"22/04/17", "18:00", "22:00", 5));
+        l.add(new Data(5,"22/04/17", "18:00", "22:00", 5));
+        l.add(new Data(5,"22/04/17", "18:00", "22:00", 5));
+        l.add(new Data(5,"22/04/17", "18:00", "22:00", 5));
 
         dataCustomAdapter = new DataCustomAdapter(getBaseContext(), l);
 
         recyclerViewData.setAdapter(dataCustomAdapter);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
 
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            onBackPressed();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

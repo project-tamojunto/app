@@ -54,14 +54,6 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -103,7 +95,9 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.rapel) {
+            return true;
+        } else  if (id == R.id.surfar) {
             return true;
         }
 
@@ -117,13 +111,8 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
+            Intent intent = new Intent(MainActivity.this, MySchedulesActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
@@ -154,7 +143,7 @@ public class MainActivity extends AppCompatActivity
 
         for (Service service : services) {
             LatLng latLng = new LatLng(Double.parseDouble(service.getLat()), Double.parseDouble(service.getLng()));
-            mMap.addMarker(new MarkerOptions().position(latLng).title(service.getNome()).icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("nature",90,105))));
+            mMap.addMarker(new MarkerOptions().position(latLng).title(service.getNome()).icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("icon_marker",90,120))));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,13));

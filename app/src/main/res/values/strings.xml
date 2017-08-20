@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">tamojunto</string>
+    <string name="app_name_separado">Tamo junto</string>
     <string name="title_activity_maps">Map</string>
+    <string name="nova_aventura">Tamo Junto - Nova aventura</string>
     <string name="title_activity_main">MainActivity</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -14,5 +16,11 @@
     <string name="descricao">Descrição: </string>
     <string name="servicos_adicionais">Serviços adicionais: </string>
 
+    <string name="preco_servico">Preço do servico: </string>
+    <string name="pagar">Pagar </string>
 
+    <string name="profissional">Seu instrutor... </string>
+
+    <string name="facebook">Conectar-se com o Facebook</string>
+    <string name="selecione">Selecione um dos pontos de seu interesse</string>
 </resources>

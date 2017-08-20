@@ -5,16 +5,27 @@ package com.ambev.tamojunto.model;
  */
 
 public class Data {
+
+    private int id;
     private String data;
     private String horarioIni;
     private String horarioFim;
     private int qtdVagas;
 
-    public Data(String data, String horarioIni, String horarioFim, int qtdVagas) {
+    public Data(int id, String data, String horarioIni, String horarioFim, int qtdVagas) {
+        this.id = id;
         this.data = data;
         this.horarioIni = horarioIni;
         this.horarioFim = horarioFim;
         this.qtdVagas = qtdVagas;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getData() {
