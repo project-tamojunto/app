@@ -1,7 +1,8 @@
 package com.ambev.tamojunto.webservice;
 
 
-import com.ambev.beerpoint.utils.Constants;
+
+import com.ambev.tamojunto.utils.Constants;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

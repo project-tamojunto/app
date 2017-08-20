@@ -23,6 +23,8 @@ import com.ambev.tamojunto.R;
 import com.ambev.tamojunto.helper.GPSTracker;
 import com.ambev.tamojunto.model.Service;
 import com.ambev.tamojunto.utils.AddActivityPermissionsDispatcher;
+import com.ambev.tamojunto.webservice.APIClient;
+import com.ambev.tamojunto.webservice.APIInterface;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -35,15 +37,21 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import java.util.ArrayList;
 
 import permissions.dispatcher.NeedsPermission;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class MainActivity extends AppCompatActivity
         implements OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
 
+    private Call<ArrayList<Service>> callServices;
+    private APIInterface apiService;
+
+
     private GoogleMap mMap;
     private GPSTracker gps;
     private double latitude = 0f, longitude = 0f;
-    private String android_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,9 +132,14 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+
+    GoogleMap googleMapExt;
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
+        googleMapExt = googleMap;
 
         AddActivityPermissionsDispatcher.getLatLngWithCheck(MainActivity.this);
 
@@ -134,37 +147,54 @@ public class MainActivity extends AppCompatActivity
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
-        ArrayList<Service> services = new ArrayList<Service>();
 
-        services.add(new Service("1","","","","-23.566755","-46.401039",1));
-        services.add(new Service("2","","","","-22.853341","-47.214708",1));
-        services.add(new Service("3","","","","-22.853087","-47.204776",1));
-        services.add(new Service("4","","","","-22.860561","-47.203445",1));
+        apiService = APIClient.getService().create(APIInterface.class);
+        callServices = apiService.getServicos();
 
-        for (Service service : services) {
-            LatLng latLng = new LatLng(Double.parseDouble(service.getLat()), Double.parseDouble(service.getLng()));
-            mMap.addMarker(new MarkerOptions().position(latLng).title(service.getNome()).icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("icon_marker",90,120))));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        callServices.enqueue(new Callback<ArrayList<Service>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Service>> call, Response<ArrayList<Service>> response) {
 
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,13));
-            googleMap.animateCamera(CameraUpdateFactory.zoomIn());
-            googleMap.animateCamera(CameraUpdateFactory.zoomTo(13), 2000, null);
+                ArrayList<Service> srvcs = response.body();
 
-            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener()
-            {
 
-                @Override
-                public boolean onMarkerClick(Marker arg0) {
-                    Intent intent = new Intent(MainActivity.this, InfoServiceActivity.class);
-                    intent.putExtra("id", "" + arg0.getTitle());
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
+                ArrayList<Service> services = new ArrayList<Service>();
 
-                    return true;
+                services.addAll(srvcs);
+
+                for (Service service : services) {
+                    LatLng latLng = new LatLng(Double.parseDouble(service.getLatitude()), Double.parseDouble(service.getLongitude()));
+                    mMap.addMarker(new MarkerOptions().position(latLng).title(String.valueOf(service.getId())).icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("icon_marker",90,120))));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+
+                    googleMapExt.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,10));
+                    googleMapExt.animateCamera(CameraUpdateFactory.zoomIn());
+                    googleMapExt.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);
+
+                    mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener()
+                    {
+
+                        @Override
+                        public boolean onMarkerClick(Marker arg0) {
+                            Intent intent = new Intent(MainActivity.this, InfoServiceActivity.class);
+                            intent.putExtra("id", "" + arg0.getTitle());
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+
+                            return true;
+                        }
+
+                    });
                 }
 
-            });
-        }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Service>> call, Throwable t) {
+                Log.e("Networking", t.toString());
+
+            }
+        });
     }
 
     public Bitmap resizeMapIcons(String iconName, int width, int height){

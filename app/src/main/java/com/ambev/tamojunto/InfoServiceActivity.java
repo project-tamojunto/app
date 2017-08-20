@@ -5,17 +5,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ambev.tamojunto.adapter.DataCustomAdapter;
 import com.ambev.tamojunto.model.Data;
+import com.ambev.tamojunto.model.ListaAgenda;
 import com.ambev.tamojunto.model.Service;
+import com.ambev.tamojunto.webservice.APIClient;
+import com.ambev.tamojunto.webservice.APIInterface;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class InfoServiceActivity extends AppCompatActivity {
 
@@ -26,12 +34,14 @@ public class InfoServiceActivity extends AppCompatActivity {
 
     private TextView nome, preco, descricao, servicos_adicionais, categoria;
 
+    private Call<Service> callService;
+    private APIInterface apiService;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info_service);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
 
         Intent myIntent = getIntent();
         id = myIntent.getStringExtra("id");
@@ -52,21 +62,39 @@ public class InfoServiceActivity extends AppCompatActivity {
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 3);
         recyclerViewData.setLayoutManager(mLayoutManager);
 
-        List<Data> l = new ArrayList<Data>();
-        l.add(new Data(1,"22/04/17", "18:00", "22:00", 5));
-        l.add(new Data(2,"22/04/17", "18:00", "22:00", 5));
-        l.add(new Data(3,"22/04/17", "18:00", "22:00", 5));
-        l.add(new Data(4,"22/04/17", "18:00", "22:00", 5));
-        l.add(new Data(5,"22/04/17", "18:00", "22:00", 5));
-        l.add(new Data(5,"22/04/17", "18:00", "22:00", 5));
-        l.add(new Data(5,"22/04/17", "18:00", "22:00", 5));
-        l.add(new Data(5,"22/04/17", "18:00", "22:00", 5));
-        l.add(new Data(5,"22/04/17", "18:00", "22:00", 5));
-        l.add(new Data(5,"22/04/17", "18:00", "22:00", 5));
+        apiService = APIClient.getService().create(APIInterface.class);
+        callService = apiService.getServicoById( "" + id);
 
-        dataCustomAdapter = new DataCustomAdapter(getBaseContext(), l);
+        callService.enqueue(new Callback<Service>() {
+            @Override
+            public void onResponse(Call<Service> call, Response<Service> response) {
 
-        recyclerViewData.setAdapter(dataCustomAdapter);
+                Service service = response.body();
+
+                List<ListaAgenda> l = new ArrayList<ListaAgenda>();
+
+                for (ListaAgenda list : service.getListaAgenda()) {
+                    l.add(new ListaAgenda(list.getId(),list.getData(), list.getHorarioIni(), list.getHorarioFim(), list.getQtdVagas(), list.getQtdOcupadas()));
+                }
+
+                dataCustomAdapter = new DataCustomAdapter(getBaseContext(), l);
+
+                recyclerViewData.setAdapter(dataCustomAdapter);
+            }
+
+            @Override
+            public void onFailure(Call<Service> call, Throwable t) {
+                Log.e("Networking", t.toString());
+
+                }
+            }
+
+        );
+
+
+
+
+
     }
 
     @Override

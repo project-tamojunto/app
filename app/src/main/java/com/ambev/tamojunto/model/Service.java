@@ -1,30 +1,63 @@
 package com.ambev.tamojunto.model;
 
+import java.util.ArrayList;
+
 /**
  * Created by matheuscatossi on 19/08/17.
  */
 
 public class Service {
+
+    private int id;
     private String nome;
-    private String preco;
+    private double preco;
     private String descricao;
     private String servicosAdicionais;
-    private String lat;
-    private String lng;
-    private int idCategoria;
+    private String latitude;
+    private String longitude;
+    private String categoria;
+    private ArrayList<ListaAgenda> listaAgenda;
 
-    public Service(String nome, String preco, String descricao, String servicosAdicionais, String lat, String lng, int idCategoria) {
+    public Service(int id, String nome, double preco, String descricao, String servicosAdicionais, String latitude, String longitude, String categoria) {
         this.nome = nome;
         this.preco = preco;
         this.descricao = descricao;
         this.servicosAdicionais = servicosAdicionais;
-        this.lat = lat;
-        this.lng = lng;
-        this.idCategoria = idCategoria;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.categoria = categoria;
+    }
+
+    public Service(int id, String nome, double preco, String descricao, String servicosAdicionais, String latitude, String longitude, String categoria, ArrayList<ListaAgenda> listaAgenda) {
+        this.nome = nome;
+        this.preco = preco;
+        this.descricao = descricao;
+        this.servicosAdicionais = servicosAdicionais;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.categoria = categoria;
+        this.listaAgenda = listaAgenda;
+    }
+
+
+    public ArrayList<ListaAgenda> getListaAgenda() {
+        return listaAgenda;
+    }
+
+    public void setListaAgenda(ArrayList<ListaAgenda> listaAgenda) {
+        this.listaAgenda = listaAgenda;
     }
 
     public Service() {
 
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNome() {
@@ -35,11 +68,11 @@ public class Service {
         this.nome = nome;
     }
 
-    public String getPreco() {
+    public double getPreco() {
         return preco;
     }
 
-    public void setPreco(String preco) {
+    public void setPreco(double preco) {
         this.preco = preco;
     }
 
@@ -59,27 +92,28 @@ public class Service {
         this.servicosAdicionais = servicosAdicionais;
     }
 
-    public String getLat() {
-        return lat;
+    public String getLatitude() {
+        return latitude;
     }
 
-    public void setLat(String lat) {
-        this.lat = lat;
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
     }
 
-    public String getLng() {
-        return lng;
+    public String getLongitude() {
+        return longitude;
     }
 
-    public void setLng(String lng) {
-        this.lng = lng;
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 
-    public int getIdCategoria() {
-        return idCategoria;
+    public String getCategoria() {
+
+        return categoria;
     }
 
-    public void setIdCategoria(int idCategoria) {
-        this.idCategoria = idCategoria;
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
     }
 }

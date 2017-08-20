@@ -1,17 +1,14 @@
 package com.ambev.tamojunto.webservice;
-import com.ambev.beerpoint.model.Network;
-import com.ambev.beerpoint.model.Networking;
-import com.ambev.beerpoint.model.Person;
-import com.ambev.beerpoint.utils.Constants;
-import com.google.gson.JsonElement;
 
+
+import com.ambev.tamojunto.model.Service;
+import com.ambev.tamojunto.utils.Constants;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
-import retrofit2.Response;
-import retrofit2.http.Body;
 import retrofit2.http.GET;
-import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
@@ -21,23 +18,11 @@ import retrofit2.http.Query;
 
 public interface APIInterface {
 
-    @POST(Constants.SET_NETWORK)
-    Call<Response> setNetworking(@Body Network network);
 
-    @GET(Constants.GET_NETWORKING)
-    Call<Networking> getNetworking(@Query("id") String id);
+    @GET(Constants.GET_SERVICO_BY_ID)
+    Call<Service> getServicoById(@Query("idServico") String idServico);
 
-    @POST(Constants.SET_USER)
-    Call<com.ambev.beerpoint.model.Response> setUser(@Header("Content-Type") String content_type, @Body JsonElement person);
-
-    @POST(Constants.CONNECT)
-    Call<com.ambev.beerpoint.model.Response> connect(@Header("Content-Type") String content_type, @Body JsonElement network);
-
-    @GET(Constants.ROOMS)
-    Call<List<Person>> getRooms(@Query("code") String code);
-
-
-
-
+    @GET(Constants.GET_SERVICOS)
+    Call<ArrayList<Service>> getServicos();
 
 }

@@ -14,6 +14,7 @@ import com.ambev.tamojunto.PaymentActivity;
 import com.ambev.tamojunto.R;
 import com.ambev.tamojunto.helper.DownloadImageTask;
 import com.ambev.tamojunto.model.Data;
+import com.ambev.tamojunto.model.ListaAgenda;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ import java.util.List;
 public class DataCustomAdapter extends RecyclerView.Adapter<DataCustomAdapter.MyViewHolder> {
 
     private Context mContext;
-    private List<Data> dataList;
+    private List<ListaAgenda> dataList;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView data, horaIni, horaFim, qtdVagas;
@@ -43,7 +44,7 @@ public class DataCustomAdapter extends RecyclerView.Adapter<DataCustomAdapter.My
         }
     }
 
-    public DataCustomAdapter(Context mContext, List<Data> dataList) {
+    public DataCustomAdapter(Context mContext, List<ListaAgenda> dataList) {
         this.mContext = mContext;
         this.dataList = dataList;
     }
@@ -60,7 +61,7 @@ public class DataCustomAdapter extends RecyclerView.Adapter<DataCustomAdapter.My
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
 
-        final Data data = dataList.get(position);
+        final ListaAgenda data = dataList.get(position);
         holder.horaFim.setText(data.getHorarioFim());
         holder.horaIni.setText(data.getHorarioIni());
         holder.data.setText(data.getData());
